@@ -37,9 +37,9 @@ def create_app():
             if Job.fetch(id=id, connection=conn) and \
                     Job.fetch(id=id, connection=conn).result:
                 return jsonify({'ready': True})
-            return jsonify({'ready': False, 'error': False})
+            return jsonify({'ready': False})
         except NoSuchJobError:
-            return jsonify({'ready': False, 'error': True})
+            return jsonify({'ready': False})
 
     @app.route('/result/<id>', methods=('GET',))
     def result(id):
@@ -47,6 +47,5 @@ def create_app():
             return render_template('result.html', words=Job.fetch(id=id, connection=conn).result)
         except NoSuchJobError:
             return render_template('job-error.html')
-
 
     return app
