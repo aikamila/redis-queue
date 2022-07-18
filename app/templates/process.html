@@ -10,9 +10,11 @@
     </main>
     <script>
         const url = {{ url_for("check", id=id)|tojson }};
+        const url_result = {{ url_for("result", id=id)|tojson }}
+        const id = {{ id|tojson }};
         const check = () => {
             fetch(url).then(response => response.json()).then
-            (data => console.log(data))
+            (data => {if(data.ready){window.location.replace(url_result)}})
         };
         const action1 = setTimeout(check, 2000);
         const action2 = setTimeout(check, 5000);

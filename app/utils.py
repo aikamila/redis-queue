@@ -25,7 +25,7 @@ class Element:
 
 def find_3_most_popular(url: str):
     # simulating long response time
-    time.sleep(20)
+    time.sleep(3)
     resp = requests.get(url)
     text = resp.text
     text = re.sub(CLEAN_RE, '', text)
