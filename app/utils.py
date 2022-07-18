@@ -3,7 +3,10 @@ import requests
 from collections import Counter
 import heapq
 import functools
+import re
 
+
+CLEAN_RE = re.compile('<.*?>')
 
 @functools.total_ordering
 class Element:
@@ -24,7 +27,9 @@ def find_3_most_popular(url: str):
     # simulating long response time
     time.sleep(20)
     resp = requests.get(url)
-    c = Counter(resp.text.split())
+    text = resp.text
+    text = re.sub(CLEAN_RE, '', text)
+    c = Counter(text.split())
     freqs = []
     heapq.heapify(freqs)
     for key, value in c.items():
