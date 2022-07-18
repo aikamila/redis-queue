@@ -2,6 +2,7 @@ import os
 
 from rq import Queue
 from rq.job import Job
+from rq.exceptions import NoSuchJobError
 from .worker import conn
 from .utils import find_3_most_popular
 
@@ -32,12 +33,20 @@ def create_app():
 
     @app.route('/check/<id>', methods=('GET',))
     def check(id):
-        if Job.fetch(id=id, connection=conn) and \
-                Job.fetch(id=id, connection=conn).result:
-            return jsonify({'ready': True})
-        return jsonify({'ready': False})
+        try:
+            if Job.fetch(id=id, connection=conn) and \
+                    Job.fetch(id=id, connection=conn).result:
+                return jsonify({'ready': True})
+            return jsonify({'ready': False, 'error': False})
+        except NoSuchJobError:
+            return jsonify({'ready': False, 'error': True})
 
     @app.route('/result/<id>', methods=('GET',))
     def result(id):
-        return render_template('result.html', words=Job.fetch(id=id, connection=conn).result)
+        try:
+            return render_template('result.html', words=Job.fetch(id=id, connection=conn).result)
+        except NoSuchJobError:
+            return render_template('job-error.html')
+
+
     return app
