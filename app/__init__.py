@@ -4,7 +4,7 @@ from rq import Queue
 from rq.job import Job
 from rq.exceptions import NoSuchJobError
 from .worker import conn
-from .utils import find_3_most_popular
+from .utils import find_3_most_popular_words
 
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 
@@ -23,7 +23,7 @@ def create_app():
     def index():
         url = request.args.get('url', None)
         if url:
-            result = q1.enqueue(find_3_most_popular, url, result_ttl=86400)
+            result = q1.enqueue(find_3_most_popular_words, url, result_ttl=86400)
             return redirect(url_for('process', id=result.id))
         return render_template('index.html')
 
