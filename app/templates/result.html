@@ -2,9 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Voila!</title>
 </head>
 <body>
-    {{ words }}
+    <main>
+        <div>
+            {% for word in words %}
+                <div>
+                    <p>{{ word }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </main>
 </body>
 </html>
