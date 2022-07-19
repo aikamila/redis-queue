@@ -11,6 +11,8 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify
 q1 = Queue('high', connection=conn)
 q2 = Queue('low', connection=conn)
 
+ONE_DAY_IN_SECS = 86400
+
 
 def create_app():
     app = Flask(__name__)
@@ -23,7 +25,7 @@ def create_app():
     def index():
         url = request.args.get('url', None)
         if url:
-            result = q1.enqueue(find_3_most_popular_words, url, result_ttl=86400)
+            result = q1.enqueue(find_3_most_popular_words, url, result_ttl=ONE_DAY_IN_SECS)
             return redirect(url_for('process', id=result.id))
         return render_template('index.html')
 
@@ -44,7 +46,8 @@ def create_app():
     @app.route('/result/<id>', methods=('GET',))
     def result(id):
         try:
-            return render_template('result.html', words=Job.fetch(id=id, connection=conn).result)
+            words = Job.fetch(id=id, connection=conn).result
+            return render_template('result.html', words=words)
         except NoSuchJobError:
             return render_template('job-error.html')
 
