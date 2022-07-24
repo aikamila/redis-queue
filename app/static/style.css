@@ -1,0 +1,32 @@
+main{
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form > form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.form > form > p{
+    font-size: 1.8em;
+}
+
+.text-input{
+    width: 80vw;
+    height: 6vw;
+    font-size: 1.8em;
+}
+
+.button{
+    font-size: 1.8em;
+    margin-top: 10px;
+    width: 50%;
+    border: none;
+    background-color: black;
+    color: white;
+}
