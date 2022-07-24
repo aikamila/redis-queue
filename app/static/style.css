@@ -30,3 +30,16 @@ main{
     background-color: black;
     color: white;
 }
+
+.error{
+    max-width: 80%;
+    font-size: 1.8em;
+}
+
+.result-list{
+    font-size: 1.8em;
+}
+
+.result{
+    text-align: center;
+}
