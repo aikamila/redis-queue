@@ -45,9 +45,13 @@ class Element:
 def find_3_most_popular_words(url: str):
     # simulating long response time
     time.sleep(3)
-    resp = requests.get(url)
-    text = resp.text
-    text = text_from_html(text)
+    try:
+        resp = requests.get(url)
+        text = resp.text
+        text = text_from_html(text)
+    except:
+        # handling all possible errors with a broad exception clause
+        text = 'Not valid url'
     c = Counter(text.split())
     freqs = []
     heapq.heapify(freqs)
@@ -56,6 +60,7 @@ def find_3_most_popular_words(url: str):
         if len(freqs) > 3:
             heapq.heappop(freqs)
     res = []
-    for _ in range(3):
+    total = len(freqs)
+    for _ in range(min(3, total)):
         res.append(heapq.heappop(freqs)[1])
     return res[::-1]
